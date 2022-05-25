@@ -8,7 +8,8 @@ from openpyxl.styles import Alignment
 wb = openpyxl.Workbook()
 ws = wb.active
 # Timestamp, TreeID, PatternID, Parent Process, Process ID, Event, etc.
-cell_width = [20, 12, 12, 15, 15, 35, 40, 30, 15, 40, 20, 15, 17, 35]
+cell_width = [20, 13, 11, 15, 15, 15, 22, 17, 15, 22, 18, 12, 12, 7]
+wrap_col = ['F', 'G', 'H', 'J', 'K', 'M']
 
 
 # Convert the csv to xlsx to work with openpyxl
@@ -27,8 +28,11 @@ def filter_and_freeze_format():
     for count, col in enumerate(cell_width, start=1):
         ws.column_dimensions[get_column_letter(count)].width = cell_width[count - 1]
     # wrap text to avoid cell spilling. Will change to a toggle to reduce time
-    for row in ws.iter_rows():
-        for cell in row:
+    # for row in ws.iter():
+    #     for cell in row:
+    #         cell.alignment = Alignment(wrapText=True)
+    for col in wrap_col:
+        for cell in ws[col]:
             cell.alignment = Alignment(wrapText=True)
 
 def main(filepath):
@@ -37,7 +41,7 @@ def main(filepath):
         filter_and_freeze_format()
         folder = '/'.join(filepath.split('/')[:-1]) + '/'
         output_file = filepath.split('/')[-1].split('.')[0]
-        output_path = f'{folder}new_{output_file}.xlsx'
+        output_path = f'{folder}NEW_{output_file}.xlsx'
         wb.save(output_path)
         return output_path
     except:

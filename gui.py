@@ -1,8 +1,7 @@
-import sys
+
 import PySimpleGUI as sg
 import converter
 import threading
-import time
 
 def run_converter():
     filepath = values['-FILE-']
